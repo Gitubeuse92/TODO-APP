@@ -80,7 +80,8 @@ app.get('/', (req, res) => {
  */
 app.get('/tasks', (req, res) => {
     const tasks = JSON.parse(fs.readFileSync('db.json')).tasks; // On récupère les tâches dans le fichier JSON.
-    res.render('tasks', { tasks }); // On retourne la vue "tasks.ejs" en lui passant les tâches en paramètre.
+    let message = 'TEST';
+    res.render('tasks', { tasks, message }); // On retourne la vue "tasks.ejs" en lui passant les tâches en paramètre.
 });
 
 /**
