@@ -38,7 +38,6 @@ const jsm = jsonServer.router('db.json');
  */
 const app = express();
 
-
 // ------------------ APP USE AND SET ------------------ //
 
 /** 
@@ -66,6 +65,7 @@ app.use('/api', jsm);
 app.set('view engine', 'ejs');
 
 
+
 // ------------------ ROUTES ------------------ //
 
 /**
@@ -73,15 +73,6 @@ app.set('view engine', 'ejs');
  */
 app.get('/', (req, res) => {
     res.redirect('/tasks');
-});
-
-/**
- * On va retourner une vue en ejs pour la route "/tasks".
- */
-app.get('/tasks', (req, res) => {
-    const tasks = JSON.parse(fs.readFileSync('db.json')).tasks; // On récupère les tâches dans le fichier JSON.
-    let message = 'TEST';
-    res.render('tasks', { tasks, message }); // On retourne la vue "tasks.ejs" en lui passant les tâches en paramètre.
 });
 
 /**
@@ -98,7 +89,7 @@ app.post('/tasks/create', (req, res) => {
     };
     tasks.push(newTask); // On ajoute la nouvelle tâche dans le tableau des tâches.
     fs.writeFileSync('db.json', JSON.stringify({ tasks })); // On enregistre les tâches dans le fichier JSON.
-    res.redirect('/tasks'); // On redirige l'internaute vers la page des tâches.
+    res.redirect('/tasks',{message:'la tâche bien ajouter'}); // On redirige l'internaute vers la page des tâches.
 });
 
 /**
@@ -109,14 +100,21 @@ app.get('/tasks/delete/:id', (req, res) => { // On définit la route "/tasks/del
     const tasks = JSON.parse(fs.readFileSync('db.json')).tasks; // On récupère les tâches dans le fichier JSON.
     const newTasks = tasks.filter(task => task.id !== parseInt(req.params.id)); // On filtre les tâches pour ne garder que les tâches dont l'id est différent de l'id de la tâche à supprimer.
     fs.writeFileSync('db.json', JSON.stringify({ tasks: newTasks })); // On enregistre les tâches dans le fichier JSON.
-    res.redirect('/tasks'); // On redirige l'internaute vers la page des tâches.
+    res.redirect('/tasks',{message:'la tâche a bien supprimer !'}); // On redirige l'internaute vers la page des tâches.
 });
 
 
-// ------------------ SERVER ------------------ //
 
-/**
- * Ici, on indique que l'on veut que le serveur écoute les requêtes reçues sur le port 3000.
- * Cela signifie que notre serveur va pouvoir recevoir des requêtes à l'adresse "http://localhost:3000".
- */
+
+
+
+
+app.get('/tasks',(req,res)=>{
+    const tasks = JSON.parse(fs.readFileSync('db.json')).tasks; // On récupère les tâches dans le fichier JSON.
+    let message = 'TEST';
+    res.render('tasks', { tasks, message }); // On retourne la vue "tasks.ejs" en lui passant les tâches en paramètre.
+    //pour le test : relancer avec npm start , affiche le résultat dans le terminal 
+    console.log(tasks)
+})
+
 app.listen(3000, () => console.log('Le serveur est lancé sur le port 3000'));
