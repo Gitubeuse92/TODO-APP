@@ -89,7 +89,7 @@ app.post('/tasks/create', (req, res) => {
     };
     tasks.push(newTask); // On ajoute la nouvelle tâche dans le tableau des tâches.
     fs.writeFileSync('db.json', JSON.stringify({ tasks })); // On enregistre les tâches dans le fichier JSON.
-    res.redirect('/tasks',{message:'la tâche bien ajouter'}); // On redirige l'internaute vers la page des tâches.
+    // res.redirect('/tasks',{message:'la tâche bien ajoutée'}); // On redirige l'internaute vers la page des tâches.
 });
 
 /**
@@ -100,13 +100,8 @@ app.get('/tasks/delete/:id', (req, res) => { // On définit la route "/tasks/del
     const tasks = JSON.parse(fs.readFileSync('db.json')).tasks; // On récupère les tâches dans le fichier JSON.
     const newTasks = tasks.filter(task => task.id !== parseInt(req.params.id)); // On filtre les tâches pour ne garder que les tâches dont l'id est différent de l'id de la tâche à supprimer.
     fs.writeFileSync('db.json', JSON.stringify({ tasks: newTasks })); // On enregistre les tâches dans le fichier JSON.
-    res.redirect('/tasks',{message:'la tâche a bien supprimer !'}); // On redirige l'internaute vers la page des tâches.
+    // res.redirect('/tasks',{message:'la tâche a bien supprimer !'}); // On redirige l'internaute vers la page des tâches.
 });
-
-
-
-
-
 
 
 app.get('/tasks',(req,res)=>{
